@@ -1,7 +1,7 @@
 {
   "name": "github-website",
-  "homepage": "https://gregfeng08.github.io/",
-  "private": true,
+  "homepage": "https://gregfeng08.github.io/gregfeng08.github.io",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
