@@ -40,3 +40,80 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Overlay backdrop */
+.uc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+}
+
+/* Modal card */
+.uc-modal {
+  position: relative;
+  width: min(92vw, 480px);
+  background: #111827; /* slate-900-ish */
+  color: #e5e7eb;      /* slate-200-ish */
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow:
+    0 10px 20px rgba(0,0,0,.35),
+    0 6px 6px rgba(0,0,0,.25);
+  text-align: center;
+}
+
+/* Image */
+.uc-image {
+  width: 120px;
+  height: auto;
+  display: block;
+  margin: 4px auto 12px;
+}
+
+/* Text */
+.uc-title {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+}
+.uc-text {
+  margin: 0 0 16px;
+  color: #cbd5e1; /* slate-300 */
+}
+
+/* Actions */
+.uc-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.uc-btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: #2563eb; /* blue-600 */
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.uc-btn:hover {
+  filter: brightness(1.05);
+}
+
+/* Close (X) button */
+.uc-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: #9ca3af; /* gray-400 */
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.uc-close:hover { color: #e5e7eb; }
