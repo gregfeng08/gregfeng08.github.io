@@ -35,9 +35,9 @@ function App() {
       <div>
         <PhotoOverlay />
       </div>
-      <div>
-        <h1>A little bit about me...</h1>
-        <p>
+      <div className="about-backdrop">
+        <h1 className="about-title">A little bit about me...</h1>
+        <p className="about-text">
           Hi, I'm Gregory Feng, a current accelerated Master's student at
           Arizona State University! I'm currently doing my accelerated year with
           thesis under Dr. Elina Ollila and Dr. Yinong Chen. My interests are in

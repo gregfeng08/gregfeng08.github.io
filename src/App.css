@@ -1,3 +1,21 @@
 body {
   font-family: serif, Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.about-backdrop {
+  display:grid;
+  place-items:center;
+}
+
+.about-title {
+  padding: 40px 0px 0px 0px;
+  margin: 0 0 6px;
+}
+
+.about-text {
+  margin: 0 0 16px;
+  font-size: large;
+  padding: 20px 100px 0px 100px;
+  color: #000000;
+  text-align:center;
+}
