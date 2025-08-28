@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import UnderConstructionOverlay from "./components/under_construction";
+import NavigationBar from "./components/nav_bar";
+import PhotoOverlay from "./components/photo_overlay";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [showUC, setShowUC] = useState(false);
 
   const acknowledge = () => {
@@ -31,27 +30,22 @@ function App() {
 
   return (
     <>
+      <NavigationBar />
       {showUC && <UnderConstructionOverlay onAcknowledge={acknowledge} />}
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <PhotoOverlay />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+      <div>
+        <h1>A little bit about me...</h1>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Hi, I'm Gregory Feng, a current accelerated Master's student at
+          Arizona State University! I'm currently doing my accelerated year with
+          thesis under Dr. Elina Ollila and Dr. Yinong Chen. My interests are in
+          AR/VR development, game development, and computer graphics. I'm
+          currently looking for employment for the 2026 year after I graduate
+          from this program. Nice to meet you!
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
