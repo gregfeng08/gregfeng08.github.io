@@ -1,26 +1,38 @@
 {
-  "name": "github-website",
+  "name": "gregfeng-portfolio",
   "homepage": "https://gregfeng08.github.io/",
-  "private": false,
-  "version": "0.0.0",
+  "private": true,
+  "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n web,api -c cyan,magenta \"vite\" \"node --watch server/index.js\"",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/index.js",
     "build": "tsc -b && vite build",
+    "start": "node server/index.js",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
+    "compression": "^1.7.5",
+    "express": "^4.21.2",
+    "firebase": "^11.3.0",
+    "firebase-admin": "^13.1.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-markdown": "^9.0.3",
+    "react-router-dom": "^7.1.5",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.1.2",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

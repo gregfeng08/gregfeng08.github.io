@@ -1,0 +1,62 @@
+# Cloud Build pipeline: build the container (with public Firebase client config
+# baked in), push to Artifact Registry, deploy to Cloud Run. Triggered on push
+# to the default branch (set up the trigger once in the console — see DEPLOY.md).
+
+substitutions:
+  _REGION: us-west1
+  _REPO: web
+  _SERVICE: portfolio
+  # Public Firebase client config (safe to expose). Set these on the trigger.
+  _VITE_FIREBASE_API_KEY: ""
+  _VITE_FIREBASE_AUTH_DOMAIN: ""
+  _VITE_FIREBASE_PROJECT_ID: ""
+  _VITE_FIREBASE_APP_ID: ""
+  _ADMIN_EMAIL: "gregfeng08@gmail.com"
+
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$SHORT_SHA"
+
+steps:
+  # Build image with VITE_* baked into the client bundle.
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - "-t"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$SHORT_SHA"
+      - "--build-arg"
+      - "VITE_FIREBASE_API_KEY=${_VITE_FIREBASE_API_KEY}"
+      - "--build-arg"
+      - "VITE_FIREBASE_AUTH_DOMAIN=${_VITE_FIREBASE_AUTH_DOMAIN}"
+      - "--build-arg"
+      - "VITE_FIREBASE_PROJECT_ID=${_VITE_FIREBASE_PROJECT_ID}"
+      - "--build-arg"
+      - "VITE_FIREBASE_APP_ID=${_VITE_FIREBASE_APP_ID}"
+      - "--build-arg"
+      - "VITE_ADMIN_EMAIL=${_ADMIN_EMAIL}"
+      - "."
+
+  # Push image.
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$SHORT_SHA"
+
+  # Deploy to Cloud Run.
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - "${_SERVICE}"
+      - "--image"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$SHORT_SHA"
+      - "--region"
+      - "${_REGION}"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--set-env-vars"
+      - "ADMIN_EMAIL=${_ADMIN_EMAIL},FIREBASE_PROJECT_ID=${_VITE_FIREBASE_PROJECT_ID},USE_FIRESTORE=true"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

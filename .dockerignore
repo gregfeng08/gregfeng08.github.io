@@ -1,0 +1,14 @@
+node_modules
+dist
+docs
+.git
+.gitignore
+.env
+.env.*
+server/.data
+npm-debug.log*
+*.log
+.vscode
+.idea
+.DS_Store
+design_handoff_portfolio_site
