@@ -35,7 +35,7 @@ export default function Header({ active }: { active: string }) {
         className={`hdr__tabs${open ? " hdr__tabs--open" : ""}`}
         aria-label="Primary"
       >
-        {TABS.map((t, i) => {
+        {TABS.map((t) => {
           const isActive = t.label === active;
           const to = t.hash ? `${t.to}${t.hash}` : t.to;
           return (
@@ -46,13 +46,13 @@ export default function Header({ active }: { active: string }) {
               onClick={() => setOpen(false)}
               aria-current={isActive ? "page" : undefined}
             >
-              {String(i).padStart(2, "0")} {t.label}
+              {t.label}
             </Link>
           );
         })}
       </nav>
 
-      <div className="hdr__meta">TEMPE · AZ — MMXXVI</div>
+      <div className="hdr__meta">Tempe, AZ</div>
     </header>
   );
 }

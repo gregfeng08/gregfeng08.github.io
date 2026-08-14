@@ -5,7 +5,7 @@ export default function Hero() {
     <div className="grid g-1fr-side band">
       <div className="hero__main">
         <div className="kicker hero__kicker">
-          № 00 · XR ENGINEER · GRAPHICS · SYSTEMS
+          XR · Graphics · Systems
         </div>
         <h1 className="hero__title serif">
           Gregory
@@ -13,7 +13,7 @@ export default function Hero() {
           <span className="italic accent">Feng.</span>
         </h1>
         <p className="hero__standfirst">
-          Mixed-reality systems for headsets that have to actually work — the
+          Mixed-reality systems for headsets that have to actually work: the
           meshes, the shaders, and the plumbing that keeps a Quest 3 honest.
         </p>
       </div>

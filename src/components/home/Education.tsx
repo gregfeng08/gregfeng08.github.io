@@ -4,7 +4,7 @@ import { EDUCATION } from "../../data/resume";
 export default function Education() {
   return (
     <>
-      <SectionHead num="05" title="Education" note="Dual degree · ASU Barrett" />
+      <SectionHead num="05" title="Education" note="4+1 accelerated · ASU Barrett" />
       <div className="grid g-2 band">
         <div className="cell--pad" style={{ borderRight: "1px solid var(--rule-soft)" }}>
           <div className="edu__school">{EDUCATION.school}</div>

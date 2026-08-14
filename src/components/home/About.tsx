@@ -12,9 +12,9 @@ export default function About() {
       <div className="grid g-1fr-side band">
         <div className="about__body">
           <p className="about__lead">
-            Hi — I&apos;m Greg. I build{" "}
-            <span className="accent">mixed-reality systems</span> for headsets
-            that have to actually work.
+            Hi, I&apos;m Greg. I build{" "}
+            <span className="accent">graphics and XR</span>, mostly for
+            headsets, and I build a lot of it just because I want to.
           </p>
           {ABOUT.paragraphs.map((p, i) => (
             <p className="about__text" key={i}>
@@ -24,8 +24,8 @@ export default function About() {
         </div>
         <Figure
           image={myPhoto}
-          caption="FIG. 00 — G. FENG · TEMPE"
-          role="the author"
+          caption="Greg Feng · Tempe, AZ"
+          role="that's me"
           alt="Gregory Feng"
         />
       </div>

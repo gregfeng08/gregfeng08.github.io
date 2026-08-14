@@ -5,7 +5,7 @@ export default function Work() {
   return (
     <>
       <SectionHead num="04" title="Work" note={`N=${WORK.length}`} id="work" />
-      <div className="grid g-2 band divide-r">
+      <div className="grid g-3 band divide-r">
         {WORK.map((w) => (
           <div className="work__cell" key={w.company}>
             <div className="work__when">

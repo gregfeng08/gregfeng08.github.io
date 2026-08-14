@@ -14,6 +14,9 @@ dist-ssr
 
 # docs/ is the built static site served by GitHub Pages — it is committed.
 
+# Large source videos kept locally for re-encoding — commit the web .mp4 instead
+src/assets/projects/**/*.mkv
+
 # Local env
 .env
 .env.*

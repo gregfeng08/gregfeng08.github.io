@@ -1,12 +1,12 @@
 import { CONTACT } from "../../data/resume";
 
-// Inverted contact footer (№ 07) + colophon strip.
-export default function Footer({ num = "07" }: { num?: string }) {
+// Inverted contact footer + colophon strip.
+export default function Footer() {
   return (
     <>
       <div className="footer" id="contact">
         <div className="footer__main">
-          <div className="footer__kicker">№ {num} · Contact</div>
+          <div className="footer__kicker">Contact</div>
           <div className="footer__headline">
             Let&apos;s talk about
             <br />
@@ -31,8 +31,8 @@ export default function Footer({ num = "07" }: { num?: string }) {
       </div>
       <div className="colophon">
         <span>© 2026 Gregory Feng</span>
+        <span>Built by hand in Tempe, AZ</span>
         <span>Set in Cormorant Garamond &amp; JetBrains Mono</span>
-        <span>Build 26.07 · No gradients were harmed</span>
       </div>
     </>
   );

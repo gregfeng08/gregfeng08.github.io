@@ -1,7 +1,6 @@
 // Static résumé-derived content (final copy from Gregory Feng's résumé).
-// Projects and blog posts are NOT here — they are dynamic and served by the
-// backend (Firestore), so they can be edited live from the admin UI.
-// Everything in this file is edited by changing code + redeploying.
+// Projects and the blog feed live in src/data/content.ts. Everything here is
+// edited by changing code + rebuilding.
 
 import type { Person, WorkEntry, Education, SkillGroup } from "../types";
 
@@ -17,46 +16,55 @@ export const PERSON: Person = {
 
 // Hero right-column info cells: [label, value, subline]
 export const HERO_INFO: [string, string, string][] = [
-  ["STATUS", "Open to new-grad roles", "XR · graphics · systems"],
-  ["CURRENTLY", "Celano Lab — GRA", "Cloud Run ↔ Quest 3"],
-  ["GRADUATING", "May 2026", "B.S. 3.93 · M.S. 4.00 · ASU Barrett"],
+  ["STATUS", "Open to opportunities", "XR · graphics · systems"],
+  ["CURRENTLY", "Building XR at SemiXR", "Co-founder · immersive editor"],
+  ["EDUCATION", "B.S. + M.S. Computer Science", "ASU Barrett · 3.93 / 3.97"],
   ["REACH", "gregfeng08@gmail.com", "github.com/gregfeng08"],
 ];
 
-// Personal "About" copy — carries the warmer first-person voice from the
-// original site, restyled into the editorial system.
+// Personal "About" copy — warm, first-person. The lead line lives in About.tsx
+// (it carries inline markup); these are the body paragraphs.
 export const ABOUT = {
-  lead: "Hi — I'm Greg. I build mixed-reality systems for headsets that have to actually work.",
   paragraphs: [
-    "I'm an accelerated B.S. + M.S. Computer Science student at Arizona State University (Barrett Honors), doing my thesis year in XR, graphics, and systems. My work lives at the seam between the headset and everything behind it — the meshes, the shaders, and the cloud plumbing that keeps a Quest 3 honest.",
-    "I'm graduating in May 2026 and looking for new-grad roles in XR / graphics / systems. If you're building something in that space, I'd love to talk. Nice to meet you.",
+    "I studied Computer Science at Arizona State University (Barrett Honors) as an accelerated 4+1 B.S./M.S. student, with a thesis year in XR, graphics, and systems. My work lives at the seam between the headset and everything behind it: the meshes, the shaders, and the cloud plumbing that keeps a Quest 3 honest.",
+    "Outside of work I'm usually building something of my own: a toy renderer, a shader I saw once and had to understand, some XR idea that wouldn't leave me alone. That's the part I like most, and a lot of it ends up on the blog.",
+    "I finished at ASU in May 2026 and I'm building XR at SemiXR now. I'm also actively open to roles in XR / graphics / systems. If you're building something in that space, I'd love to talk. Nice to meet you.",
   ],
 };
 
-export const NOW: string[] = [
-  "Wiring a Cloud Run dashboard ↔ Quest 3 pipeline for the Celano Lab semiconductor metrology project.",
-  "Decimating 500k–1M face meshes to run smoothly on-headset without losing annotation fidelity.",
-  "Reading Lengyel on mesh skinning + finishing a small HLSL toy renderer on the side.",
-];
-
 export const WORK: WorkEntry[] = [
+  {
+    company: "SemiXR",
+    role: "Technical Co-founder",
+    when: "Jun 2026 – Present",
+    where: "Tempe, AZ",
+    bullets: [
+      "Represented SemiXR at the LEAP East conference in Hong Kong, hardening the Quest 3 build for live floor use and demoing the training platform to prospective semiconductor clients.",
+      "Designing a website-embedded immersive XR editor: object-hierarchy tracking, an inspector panel for per-object properties, and a simplified UI for first-time users.",
+      "QA-testing and bugfixing existing Unity simulation environments across XR interactions and display.",
+    ],
+  },
   {
     company: "Celano Lab",
     role: "Graduate Research Assistant",
-    when: "Nov 2025 — Present",
+    when: "Nov 2025 – Jun 2026",
     where: "Tempe, AZ",
     bullets: [
-      "Architected the end-to-end Cloud Run ↔ Meta Quest 3 system for an MR semiconductor-metrology training app, enabling secure asynchronous data and 3D-model transfer between web and headset.",
+      "Built the full cloud-to-Quest pipeline: secure transfer between a Cloud Run TypeScript dashboard and a Unity mixed-reality training experience on Meta Quest 3 / 3s.",
+      "Developed Unity 6 UI for visualizing and manipulating ~500k–1M face 3D models, using mesh preprocessing, quadric edge decimation, and sampled convex mesh generation to stay interactive on-headset.",
+      "Created an annotation tool to import, label, and describe 3D models, exporting them in a localized, parseable state for downstream processing.",
     ],
   },
   {
     company: "Meteor Studio",
     role: "Extended Reality Developer",
-    when: "May 2024 — Dec 2025",
+    when: "May 2024 – Dec 2025",
     where: "Tempe, AZ",
     bullets: [
-      "Led development of a real-time performance analytics pipeline for a VR medic training simulation on Meta Quest — capturing team-behavior data at 60 FPS across multiple concurrent trainees in Unity / C#.",
-      "Built interaction systems for a pre-veterinary training experience targeting modern processes for evaluating pets in VR.",
+      "Led a real-time performance analytics pipeline for a VR medic-training simulation on Meta Quest, capturing team-behavior data at 60 FPS across concurrent trainees in Unity / C#.",
+      "Created the Team Performance Architecture, a 5-layer framework capturing movement, view-frustum visual activity, and team-coordination metrics.",
+      "Engineered multiprocessed data-collection pipelines streaming through Kafka into MongoDB for downstream team-performance analysis.",
+      "Built interaction systems for a pre-veterinary VR training experience focused on interactivity and retention.",
     ],
   },
 ];
@@ -64,14 +72,14 @@ export const WORK: WorkEntry[] = [
 export const EDUCATION: Education = {
   school: "Arizona State University",
   program: "Barrett, The Honors College",
-  when: "Expected May 2026",
+  when: "May 2026",
   degrees: [
+    { name: "M.S. Computer Science · Media Arts & Engineering", gpa: "3.97" },
     { name: "B.S. Computer Science", gpa: "3.93" },
-    { name: "M.S. Computer Science · Media Arts & Engineering", gpa: "4.00" },
   ],
   awards: [
-    "Best in Track — ReMIX the Future Hackathon",
-    "Community Award — ReMIX the Future Hackathon",
+    "Best in Track, ReMIX the Future Hackathon",
+    "Community Award, ReMIX the Future Hackathon",
     "New American Scholar",
     "Summa Cum Laude",
   ],
@@ -88,11 +96,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     group: "Languages",
-    items: ["C#", "C++", "Java", "Python", "SQL", "JavaScript", "HTML"],
-  },
-  {
-    group: "Tools",
-    items: ["Git", "PowerBI", "PowerApps", "VS Code", "Claude Code"],
+    items: ["C#", "C++", "Java", "Python", "SQL", "JavaScript"],
   },
 ];
 
@@ -104,5 +108,3 @@ export const CONTACT: { k: string; v: string; href?: string; cta?: boolean }[] =
   { k: "PHONE", v: PERSON.phone, href: `tel:${PERSON.phone.replace(/[^0-9+]/g, "")}` },
   { k: "RÉSUMÉ", v: "GREG_FENG_2026.PDF ↓", href: "/resume.pdf", cta: true },
 ];
-
-export const BLOG_CATEGORIES = ["All", "Graphics", "XR Devlog", "Systems", "Notes"] as const;

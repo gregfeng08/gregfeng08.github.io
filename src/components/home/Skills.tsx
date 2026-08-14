@@ -6,7 +6,7 @@ export default function Skills() {
   return (
     <>
       <SectionHead num="06" title="Stack" note={`${count} items`} />
-      <div className="grid g-4 band divide-r">
+      <div className="grid g-3 band divide-r">
         {SKILLS.map((s) => (
           <div className="skill__cell" key={s.group}>
             <div className="skill__group">{s.group}</div>

@@ -9,10 +9,13 @@
 
   --paper: #f7f4ed;
   --ink: #111008;
-  --mute: #5a5248;
-  --rule-soft: #d9d2c4;
-  --accent: oklch(0.5 0.12 45); /* ~#8c4f2b terracotta */
+  --mute: #4a4234; /* secondary text — darkened from #5a5248 so body copy actually reads */
+  --faint: #756b5b; /* tertiary only: timestamps, fine print, counts */
+  --rule-soft: #c3b7a0; /* hairline grid — now actually visible on cream */
+  --rule-faint: #ded6c7; /* the softest internal divider */
+  --accent: oklch(0.47 0.145 42); /* deeper terracotta — reads as intentional color */
   --accent-dark: oklch(0.8 0.1 50); /* ~#dfa476 accent-on-dark */
+  --accent2: oklch(0.52 0.075 235); /* muted slate-blue — marks short "posts" in the stream */
   --fig-bg: #efe9dd;
   --hover: #efe9dd;
 
@@ -406,24 +409,97 @@ img {
   mix-blend-mode: normal;
 }
 
+/* Gallery controls: pagination dots + hover arrows */
+.figure__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 4;
+}
+.figure__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(247, 244, 237, 0.5);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+.figure__dot:hover {
+  background: rgba(247, 244, 237, 0.85);
+}
+.figure__dot--active {
+  background: var(--paper);
+  transform: scale(1.15);
+}
+.figure__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(17, 16, 8, 0.4);
+  color: var(--paper);
+  cursor: pointer;
+  opacity: 0;
+  z-index: 4;
+  transition: opacity 120ms ease, background-color 120ms ease;
+}
+.figure__nav svg {
+  display: block;
+}
+.figure:hover .figure__nav {
+  opacity: 1;
+}
+.figure__nav:hover {
+  background: rgba(17, 16, 8, 0.72);
+}
+.figure__nav--prev {
+  left: 8px;
+}
+.figure__nav--next {
+  right: 8px;
+}
+
 /* =========================================================================
    Now
    ========================================================================= */
 .now__cell {
+  display: block;
   padding: 28px;
   min-height: 150px;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 120ms ease;
+}
+a.now__cell:hover {
+  background: var(--hover);
 }
 .now__label {
   font-family: var(--mono);
   font-size: 10px;
   color: var(--accent);
   letter-spacing: 0.12em;
+  text-transform: uppercase;
   margin-bottom: 14px;
 }
 .now__line {
   font-family: var(--serif);
   font-size: 21px;
   line-height: 1.3;
+}
+a.now__cell:hover .now__line {
+  color: var(--accent);
 }
 
 /* =========================================================================
@@ -436,6 +512,11 @@ img {
 }
 .proj:hover {
   background: var(--hover);
+}
+/* Last project row carries .band to close the section — restore the dark 2px
+   rule the later .proj border-bottom would otherwise override. */
+.proj.band {
+  border-bottom: 2px solid var(--ink);
 }
 .proj__index {
   padding: 28px;
@@ -744,44 +825,16 @@ img {
   font-size: 10px;
   opacity: 0.6;
 }
-.catrail__rss {
-  padding: 14px 24px;
+.catrail__note {
+  padding: 16px 24px;
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--mute);
-  letter-spacing: 0.12em;
+  color: var(--faint);
+  letter-spacing: 0.1em;
+  line-height: 1.7;
   text-transform: uppercase;
 }
 
-.feat__meta {
-  padding: 40px 28px;
-  border-right: 1px solid var(--rule-soft);
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-.feat__body {
-  padding: 40px 32px;
-  border-right: 1px solid var(--rule-soft);
-}
-.feat__title {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 46px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  margin: 0 0 16px;
-}
-.feat__blurb {
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--mute);
-  margin: 0;
-  max-width: 620px;
-}
 .btn-read {
   margin-top: 22px;
   display: inline-block;
@@ -800,63 +853,130 @@ img {
   background: var(--accent);
   color: var(--paper);
 }
-.feat__date,
-.entry__date {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--mute);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  line-height: 2.2;
+/* ---- The stream: short posts (inline) + article preview cards ---------- */
+.stream {
+  display: flex;
+  flex-direction: column;
 }
-.feat__date {
-  padding: 40px 28px;
+.s-entry {
+  padding: 34px 56px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.s-entry:last-child {
+  border-bottom: none;
 }
 
-.entry {
-  border-bottom: 1px solid var(--rule-soft);
-  transition: background-color 120ms ease;
+/* Entry header row: kind marker · topic · date (date pushed to the edge) */
+.s-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
-.entry:hover {
-  background: var(--hover);
+.s-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--ink);
 }
-.entry__meta {
-  padding: 24px 28px;
-  border-right: 1px solid var(--rule-soft);
+.s-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.s-kind--post .s-dot {
+  background: var(--accent2);
+}
+.s-kind--article .s-dot {
+  background: var(--accent);
+}
+.s-topic {
+  color: var(--mute);
+  border: 1px solid var(--rule-soft);
+  padding: 2px 9px;
+}
+.s-time {
+  margin-left: auto;
+  color: var(--faint);
+  letter-spacing: 0.08em;
+}
+
+/* Short post — the full body renders right here in the feed */
+.s-post-body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: #2b2820;
+  max-width: 680px;
+}
+.s-post-body p {
+  margin: 0 0 12px;
+}
+.s-post-body p:last-child {
+  margin-bottom: 0;
+}
+.s-post-body code {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--fig-bg);
+  padding: 1px 5px;
+}
+.s-post-body a {
+  border-bottom: 1px solid var(--accent);
+}
+.s-post-img {
+  margin-top: 18px;
+  border: 1px solid var(--rule-soft);
+  width: 100%;
+  max-width: 680px;
+}
+
+/* Long article — preview that links out to its own page */
+.s-article-title {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 10px;
+  transition: color 120ms ease;
+}
+.s-article-title:hover {
+  color: var(--accent);
+}
+.s-article-blurb {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--mute);
+  margin: 0;
+  max-width: 620px;
+}
+.s-article-foot {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 20px;
+}
+.s-article-foot .btn-read {
+  margin-top: 0;
+}
+.s-readtime {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--faint);
 }
-.entry__cat {
-  color: var(--accent);
-  margin-bottom: 4px;
-}
-.entry__num {
-  color: var(--mute);
-}
-.entry__body {
-  padding: 24px 32px;
-  border-right: 1px solid var(--rule-soft);
-}
-.entry__title {
-  font-family: var(--serif);
-  font-size: 26px;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-}
-.entry__blurb {
-  font-family: var(--sans);
-  font-size: 13px;
-  color: var(--mute);
-  margin-top: 6px;
-  line-height: 1.5;
-  max-width: 620px;
-}
-.entry__date {
-  padding: 24px 28px;
-  line-height: 2;
-}
+
 .blog__foot {
   padding: 16px 28px;
   display: flex;
@@ -968,6 +1088,13 @@ img {
   max-width: 100%;
   margin: 8px 0 24px;
   border: 1px solid var(--rule-soft);
+}
+
+/* Math (KaTeX): let wide display equations scroll rather than overflow the page */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 0;
 }
 .post__back {
   display: inline-block;
@@ -1357,6 +1484,9 @@ img {
   }
   .post__main {
     padding: 40px 28px 56px;
+  }
+  .s-entry {
+    padding: 28px;
   }
   .hero__side,
   .footer__rows {

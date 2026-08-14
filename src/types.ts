@@ -1,32 +1,58 @@
 // Shared data shapes for the portfolio + blog.
 
+// A single item in a project's figure gallery. `src` is a path under public/
+// (leading slash), e.g. "/projects/mxr-metrology/demo.mp4".
+export interface MediaItem {
+  type: "image" | "video";
+  src: string;
+  poster?: string; // optional poster frame for a video
+  alt?: string;
+}
+
 export interface Project {
   id: string;
   title: string;
   short: string;
   blurb: string;
   tags: string[];
-  when: string; // e.g. "Nov 2025 — Present"
+  when: string; // e.g. "Nov 2025 – Present"
   role: string; // e.g. "Lead engineer · Celano Lab"
-  image?: string; // optional URL to a real screenshot/capture
+  image?: string; // single image (legacy / simple case)
+  media?: MediaItem[]; // gallery of images + video; cycles with dots
   featured?: boolean;
   order?: number; // manual sort (lower = higher on the page)
 }
 
-export type BlogCategory = "Graphics" | "XR Devlog" | "Systems" | "Notes";
+// The blog is a single reverse-chron stream of two kinds of entry:
+//  - "post"    — a short, casual update rendered inline in the stream.
+//  - "article" — a long piece shown as a preview card that links out to its
+//                own page (/blog/<slug>).
+export type Topic = "Graphics" | "XR" | "Systems" | "Life";
 
-export interface BlogPost {
+interface FeedBase {
   id: string;
-  slug: string;
-  title: string;
-  category: BlogCategory;
-  date: string; // ISO "2026-03-14" — sorted newest first
-  readingTime: string; // e.g. "8 min"
-  blurb: string;
-  body: string; // markdown
-  featured?: boolean;
+  kind: "post" | "article";
+  topic: Topic;
+  date: string; // ISO — "2026-03-14" or "2026-03-14T18:30" — sorted newest first
   published?: boolean;
 }
+
+export interface Post extends FeedBase {
+  kind: "post";
+  body: string; // short markdown, rendered inline
+  image?: string; // optional attached image (WIP render, screenshot, meme)
+}
+
+export interface Article extends FeedBase {
+  kind: "article";
+  slug: string;
+  title: string;
+  blurb: string;
+  readingTime?: string; // e.g. "8 min"
+  body: string; // full markdown, shown on the article page
+}
+
+export type FeedEntry = Post | Article;
 
 export interface WorkEntry {
   company: string;
