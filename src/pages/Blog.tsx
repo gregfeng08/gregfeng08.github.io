@@ -1,11 +1,7 @@
-import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Header from "../components/layout/Header";
-import PostForm from "../components/admin/PostForm";
-import { useAuth } from "../lib/auth";
-import { useContent } from "../lib/content";
+import { publishedPosts } from "../data/content";
 import { BLOG_CATEGORIES } from "../data/resume";
-import type { BlogPost } from "../types";
 
 function fmtDate(iso: string) {
   const d = new Date(iso + (iso.length === 10 ? "T00:00:00" : ""));
@@ -16,24 +12,13 @@ function fmtDate(iso: string) {
 }
 
 export default function Blog() {
-  const { isAdmin } = useAuth();
-  const { posts, postsLoading, refreshPosts } = useContent();
   const [params, setParams] = useSearchParams();
-  const [editing, setEditing] = useState<BlogPost | null>(null);
 
   const activeCat = params.get("cat") || "All";
   const setCat = (c: string) =>
     setParams(c === "All" ? {} : { cat: c }, { replace: true });
 
-  // Public sees published only; admin sees everything (drafts flagged).
-  const visible = useMemo(
-    () =>
-      posts
-        .filter((p) => isAdmin || p.published !== false)
-        .slice()
-        .sort((a, b) => b.date.localeCompare(a.date)),
-    [posts, isAdmin],
-  );
+  const visible = publishedPosts();
 
   const filtered = visible.filter(
     (p) => activeCat === "All" || p.category === activeCat,
@@ -86,8 +71,7 @@ export default function Blog() {
         </div>
       </div>
 
-      {postsLoading && <div className="state">Loading field notes…</div>}
-      {!postsLoading && filtered.length === 0 && (
+      {filtered.length === 0 && (
         <div className="state band">No entries in this category yet.</div>
       )}
 
@@ -101,15 +85,7 @@ export default function Blog() {
             {featured.category}
           </div>
           <div className="feat__body editable">
-            {isAdmin && (
-              <button className="edit-pill" onClick={() => setEditing(featured)}>
-                ✎ Edit
-              </button>
-            )}
-            <h2 className="feat__title">
-              {featured.published === false && isAdmin ? "[DRAFT] " : ""}
-              {featured.title}
-            </h2>
+            <h2 className="feat__title">{featured.title}</h2>
             <p className="feat__blurb">{featured.blurb}</p>
             <Link className="btn-read" to={`/blog/${featured.slug}`}>
               Read entry →
@@ -131,17 +107,11 @@ export default function Blog() {
             <div className="entry__num">{String(i + 2).padStart(2, "0")}</div>
           </div>
           <div className="entry__body editable">
-            {isAdmin && (
-              <button className="edit-pill" onClick={() => setEditing(p)}>
-                ✎ Edit
-              </button>
-            )}
             <Link
               to={`/blog/${p.slug}`}
               className="entry__title"
               style={{ color: "inherit", display: "block" }}
             >
-              {p.published === false && isAdmin ? "[DRAFT] " : ""}
               {p.title}
             </Link>
             <div className="entry__blurb">{p.blurb}</div>
@@ -160,14 +130,6 @@ export default function Blog() {
         </span>
         <span>— end of log · more soon —</span>
       </div>
-
-      {editing && (
-        <PostForm
-          existing={editing}
-          onClose={() => setEditing(null)}
-          onSaved={refreshPosts}
-        />
-      )}
     </div>
   );
 }

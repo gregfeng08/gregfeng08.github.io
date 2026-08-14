@@ -9,15 +9,14 @@ lerna-debug.log*
 
 node_modules
 dist
-docs
 dist-ssr
 *.local
 
-# Local env + local datastore (dev)
+# docs/ is the built static site served by GitHub Pages — it is committed.
+
+# Local env
 .env
 .env.*
-!.env.example
-server/.data/
 
 # Editor directories and files
 .vscode/*

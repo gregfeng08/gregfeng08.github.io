@@ -2,30 +2,18 @@ import SectionHead from "../layout/SectionHead";
 import Figure from "../layout/Figure";
 import type { Project } from "../../types";
 
-// Selected projects (№ 03). Data-driven: `projects` comes from the API so the
-// admin can add/edit/reorder them live. When `isAdmin`, each row gets an
-// "edit" pill and an "+ add" affordance is handled by the floating action menu.
-export default function Projects({
-  projects,
-  loading,
-  isAdmin,
-  onEdit,
-}: {
-  projects: Project[];
-  loading: boolean;
-  isAdmin: boolean;
-  onEdit: (p: Project) => void;
-}) {
+// Selected projects (№ 03). Data-driven from the static content module
+// (src/data/content.ts).
+export default function Projects({ projects }: { projects: Project[] }) {
   return (
     <>
       <SectionHead
         num="03"
         title="Selected projects"
-        note={loading ? "Loading…" : `N=${projects.length} · full index in log`}
+        note={`N=${projects.length} · full index in log`}
         id="projects"
       />
-      {loading && <div className="state">Loading projects…</div>}
-      {!loading && projects.length === 0 && (
+      {projects.length === 0 && (
         <div className="state band">No projects yet.</div>
       )}
       {projects.map((p, i) => (
@@ -40,15 +28,6 @@ export default function Projects({
             ))}
           </div>
           <div className="proj__body">
-            {isAdmin && (
-              <button
-                className="edit-pill"
-                onClick={() => onEdit(p)}
-                aria-label={`Edit ${p.title}`}
-              >
-                ✎ Edit
-              </button>
-            )}
             <h3 className="proj__title">{p.title}</h3>
             <p className="proj__blurb">{p.blurb}</p>
             <div className="tags">

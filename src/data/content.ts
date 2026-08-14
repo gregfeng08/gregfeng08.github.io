@@ -1,8 +1,13 @@
-// Initial content used to seed an empty datastore on first run. After that,
-// edits live in the datastore (Firestore or the local JSON file) and this file
-// is ignored. Projects & posts are the only dynamic collections.
+// Static site content. This replaces the old server + Firestore datastore:
+// projects and blog posts are now compiled straight into the bundle. To add or
+// edit content, change this file and rebuild (`npm run build`) — there is no
+// in-browser CMS on the static build.
 
-export const SEED_PROJECTS = [
+import type { BlogPost, Project } from "../types";
+
+// Selected projects, shown on the home page. `order` controls placement
+// (lower = higher on the page).
+export const PROJECTS: Project[] = [
   {
     id: "mxr-metrology",
     title: "Mixed Reality Semiconductor Metrology",
@@ -63,10 +68,27 @@ export const SEED_PROJECTS = [
   },
 ];
 
-const lorem =
-  "This is a placeholder body. Replace it from the admin editor — the **+** button, bottom-right, when you're signed in.\n\n## A heading\n\nWrite in Markdown: `inline code`, lists, links, and fenced code blocks all render.\n\n```csharp\n// example\nvoid Update() { /* ... */ }\n```\n\n> Notes filed by hand.";
+// Placeholder body for the seed field notes. Swap these out with real writing
+// as posts go live (each entry's `body` is Markdown).
+const placeholderBody = [
+  "This entry is a placeholder — the full write-up is on the way.",
+  "",
+  "## What this will cover",
+  "",
+  "The notes are written in Markdown, so `inline code`, lists, links, and fenced",
+  "code blocks all render:",
+  "",
+  "```csharp",
+  "// example",
+  "void Update() { /* ... */ }",
+  "```",
+  "",
+  "> Filed by hand, newest first.",
+].join("\n");
 
-export const SEED_POSTS = [
+// Field notes / dev blog, newest first. Only published entries ship on the
+// static build.
+export const POSTS: BlogPost[] = [
   {
     id: "post-decimating",
     slug: "decimating-a-million-face-mesh",
@@ -76,7 +98,7 @@ export const SEED_POSTS = [
     readingTime: "8 min",
     blurb:
       "Notes on quadric edge decimation, sampled convex hulls, and what actually breaks on-headset.",
-    body: lorem,
+    body: placeholderBody,
     featured: true,
     published: true,
   },
@@ -89,7 +111,7 @@ export const SEED_POSTS = [
     readingTime: "12 min",
     blurb:
       "Lambert → Cook-Torrance → IBL. The minimum viable PBR stack that still teaches you something.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
   {
@@ -101,7 +123,7 @@ export const SEED_POSTS = [
     readingTime: "9 min",
     blurb:
       "Designing the transfer layer for the metrology app — retries, resumable uploads, and why polling won.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
   {
@@ -112,7 +134,7 @@ export const SEED_POSTS = [
     date: "2026-01-18",
     readingTime: "5 min",
     blurb: "Research notes from my first months as a Graduate Research Assistant.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
   {
@@ -123,7 +145,7 @@ export const SEED_POSTS = [
     date: "2025-12-09",
     readingTime: "10 min",
     blurb: "The mental model that finally made mesh traversal click for me.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
   {
@@ -135,7 +157,7 @@ export const SEED_POSTS = [
     readingTime: "11 min",
     blurb:
       "How the Steel Team Cognition pipeline moves multiplayer telemetry without dropping frames.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
   {
@@ -146,7 +168,7 @@ export const SEED_POSTS = [
     date: "2025-10-15",
     readingTime: "7 min",
     blurb: "Procedural dialogue + a knowledge graph for the stock trading sim.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
   {
@@ -157,7 +179,17 @@ export const SEED_POSTS = [
     date: "2025-09-03",
     readingTime: "4 min",
     blurb: "Balancing an M.S., research assistantship, and shipping real builds.",
-    body: lorem,
+    body: placeholderBody,
     published: true,
   },
 ];
+
+// Projects sorted for display (by `order`, then original position).
+export const sortedProjects = (): Project[] =>
+  [...PROJECTS].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+// Published posts, newest first.
+export const publishedPosts = (): BlogPost[] =>
+  POSTS.filter((p) => p.published !== false).sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
